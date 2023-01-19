@@ -1,0 +1,15 @@
+service: my-functions
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  taxCalculator:
+    handler: demoLambda.handler
+    events:
+      - http:
+          path: /api/calculateTax
+          method: POST
+          cors: true

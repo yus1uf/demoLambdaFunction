@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Tax Calcualator</title>
+</head>
+
+<body>
+    <form method="POST">
+        <input type="text" id="user-name" placeholder="Your Name" />
+        <br /><br />
+        <input type="number" min="1000" id="user-salary" placeholder="Enter your gross salary" />
+        <br /><br />
+        <button id="get-tax">Calculate Tax</button>
+    </form>
+    <br /><br />
+    <br /><br />
+    <div id="your-tax">
+        <span id="your-name"></span>
+        <br>
+        <span id="your-salary"></span>
+        <br>
+        <span id="your-tax"></span>
+        <br>
+    </div>
+    <script>
+        const URL = '';
+        const btn = document.querySelector("#get-tax");
+        btn.addEventListener('click', calculateTax, false)
+
+
+        function calculateTax(event) {
+            event.preventDefault()
+            let userName = document.querySelector("#user-name").value;
+
+            let userSalary = document.querySelector("#user-salary").value;
+            const data = {
+                userName,
+                userSalary
+            }
+
+            fetch('https://csonkhjjwg.execute-api.us-east-1.amazonaws.com/dev/api/calculateTax', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log('Success:', data);
+                    console.log('data[0].message', data.message);
+                    document.querySelector("#your-name").innerText = userName;
+                    document.querySelector("#your-salary").innerText = userSalary;
+                    document.querySelector("#your-tax").innerText = data.message;
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
